@@ -26,6 +26,6 @@ public class AppointmentRequest {
 
     private Boolean done;
 
-    @NotNull(message = "Customer ID cannot be null")
-    private Long customerId;
+    @NotBlank(message = "Customer ID cannot be blank")
+    private String customerId;
 }

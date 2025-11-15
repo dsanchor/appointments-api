@@ -18,17 +18,16 @@ public class AppointmentResponse {
     private String category;
     private LocalDateTime startDate;
     private Boolean done;
-    private Long customerId;
+    private String customerId;
 
     public static AppointmentResponse fromEntity(Appointment appointment) {
         return new AppointmentResponse(
-            appointment.getId(),
-            appointment.getTitle(),
-            appointment.getNotes(),
-            appointment.getCategory(),
-            appointment.getStartDate(),
-            appointment.getDone(),
-            appointment.getCustomerId()
-        );
+                appointment.getId(),
+                appointment.getTitle(),
+                appointment.getNotes(),
+                appointment.getCategory(),
+                appointment.getStartDate(),
+                appointment.getDone(),
+                appointment.getCustomerId());
     }
 }

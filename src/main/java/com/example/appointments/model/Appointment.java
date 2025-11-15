@@ -34,5 +34,5 @@ public class Appointment {
     private Boolean done = false;
 
     @Column(nullable = false)
-    private Long customerId;
+    private String customerId;
 }
