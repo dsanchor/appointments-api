@@ -43,7 +43,7 @@ public class AppointmentController {
     }
 
     @GetMapping("/customer/{customerId}")
-    public ResponseEntity<List<AppointmentResponse>> getAppointmentsByCustomerId(@PathVariable Long customerId) {
+    public ResponseEntity<List<AppointmentResponse>> getAppointmentsByCustomerId(@PathVariable String customerId) {
         log.info("Received request to get appointments for customer {}", customerId);
         List<AppointmentResponse> appointments = appointmentService.getAppointmentsByCustomerId(customerId);
         return ResponseEntity.ok(appointments);
@@ -60,11 +60,12 @@ public class AppointmentController {
 
     @PutMapping("/customer/{customerId}/appointment/{appointmentId}")
     public ResponseEntity<AppointmentResponse> updateAppointmentByCustomer(
-            @PathVariable Long customerId,
+            @PathVariable String customerId,
             @PathVariable Long appointmentId,
             @Valid @RequestBody AppointmentRequest request) {
         log.info("Received request to update appointment {} for customer {}", appointmentId, customerId);
-        AppointmentResponse response = appointmentService.updateAppointmentByCustomer(customerId, appointmentId, request);
+        AppointmentResponse response = appointmentService.updateAppointmentByCustomer(customerId, appointmentId,
+                request);
         return ResponseEntity.ok(response);
     }
 
@@ -76,7 +77,7 @@ public class AppointmentController {
     }
 
     @DeleteMapping("/customer/{customerId}")
-    public ResponseEntity<Void> deleteAppointmentsByCustomerId(@PathVariable Long customerId) {
+    public ResponseEntity<Void> deleteAppointmentsByCustomerId(@PathVariable String customerId) {
         log.info("Received request to delete all appointments for customer {}", customerId);
         appointmentService.deleteAppointmentsByCustomerId(customerId);
         return ResponseEntity.noContent().build();
@@ -84,7 +85,7 @@ public class AppointmentController {
 
     @DeleteMapping("/customer/{customerId}/appointment/{appointmentId}")
     public ResponseEntity<Void> deleteAppointmentByCustomer(
-            @PathVariable Long customerId,
+            @PathVariable String customerId,
             @PathVariable Long appointmentId) {
         log.info("Received request to delete appointment {} for customer {}", appointmentId, customerId);
         appointmentService.deleteAppointmentByCustomer(customerId, appointmentId);

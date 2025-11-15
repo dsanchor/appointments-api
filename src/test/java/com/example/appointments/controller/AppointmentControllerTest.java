@@ -97,12 +97,12 @@ class AppointmentControllerTest {
     @Test
     void testGetAppointmentsByCustomerId() throws Exception {
         List<AppointmentResponse> responses = Arrays.asList(appointmentResponse);
-        when(appointmentService.getAppointmentsByCustomerId(100L)).thenReturn(responses);
+        when(appointmentService.getAppointmentsByCustomerId("123456789A")).thenReturn(responses);
 
-        mockMvc.perform(get("/api/appointments/customer/100"))
+        mockMvc.perform(get("/api/appointments/customer/123456789A"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(1L))
-                .andExpect(jsonPath("$[0].customerId").value(100L));
+                .andExpect(jsonPath("$[0].customerId").value("123456789A"));
     }
 
     @Test

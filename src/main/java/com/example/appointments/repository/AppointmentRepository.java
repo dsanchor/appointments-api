@@ -9,12 +9,12 @@ import java.util.Optional;
 
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
-    
-    List<Appointment> findByCustomerId(Long customerId);
-    
-    Optional<Appointment> findByIdAndCustomerId(Long id, Long customerId);
-    
-    void deleteByCustomerId(Long customerId);
-    
-    void deleteByIdAndCustomerId(Long id, Long customerId);
+
+    List<Appointment> findByCustomerId(String customerId);
+
+    Optional<Appointment> findByIdAndCustomerId(Long id, String customerId);
+
+    void deleteByCustomerId(String customerId);
+
+    void deleteByIdAndCustomerId(Long id, String customerId);
 }

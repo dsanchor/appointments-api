@@ -23,7 +23,7 @@ public class AppointmentService {
 
     public AppointmentResponse createAppointment(AppointmentRequest request) {
         log.info("Creating appointment for customer {}", request.getCustomerId());
-        
+
         Appointment appointment = new Appointment();
         appointment.setTitle(request.getTitle());
         appointment.setNotes(request.getNotes());
@@ -34,36 +34,36 @@ public class AppointmentService {
 
         Appointment saved = appointmentRepository.save(appointment);
         log.info("Created appointment with ID {}", saved.getId());
-        
+
         return AppointmentResponse.fromEntity(saved);
     }
 
     public List<AppointmentResponse> getAllAppointments() {
         log.debug("Retrieving all appointments");
         return appointmentRepository.findAll().stream()
-            .map(AppointmentResponse::fromEntity)
-            .collect(Collectors.toList());
+                .map(AppointmentResponse::fromEntity)
+                .collect(Collectors.toList());
     }
 
     public AppointmentResponse getAppointmentById(Long id) {
         log.debug("Retrieving appointment with ID {}", id);
         Appointment appointment = appointmentRepository.findById(id)
-            .orElseThrow(() -> new AppointmentNotFoundException("Appointment not found with id: " + id));
+                .orElseThrow(() -> new AppointmentNotFoundException("Appointment not found with id: " + id));
         return AppointmentResponse.fromEntity(appointment);
     }
 
-    public List<AppointmentResponse> getAppointmentsByCustomerId(Long customerId) {
+    public List<AppointmentResponse> getAppointmentsByCustomerId(String customerId) {
         log.info("Retrieving appointments for customer {}", customerId);
         return appointmentRepository.findByCustomerId(customerId).stream()
-            .map(AppointmentResponse::fromEntity)
-            .collect(Collectors.toList());
+                .map(AppointmentResponse::fromEntity)
+                .collect(Collectors.toList());
     }
 
     public AppointmentResponse updateAppointment(Long id, AppointmentRequest request) {
         log.info("Updating appointment with ID {}", id);
-        
+
         Appointment appointment = appointmentRepository.findById(id)
-            .orElseThrow(() -> new AppointmentNotFoundException("Appointment not found with id: " + id));
+                .orElseThrow(() -> new AppointmentNotFoundException("Appointment not found with id: " + id));
 
         appointment.setTitle(request.getTitle());
         appointment.setNotes(request.getNotes());
@@ -74,16 +74,17 @@ public class AppointmentService {
 
         Appointment updated = appointmentRepository.save(appointment);
         log.info("Updated appointment with ID {}", updated.getId());
-        
+
         return AppointmentResponse.fromEntity(updated);
     }
 
-    public AppointmentResponse updateAppointmentByCustomer(Long customerId, Long appointmentId, AppointmentRequest request) {
+    public AppointmentResponse updateAppointmentByCustomer(String customerId, Long appointmentId,
+            AppointmentRequest request) {
         log.info("Updating appointment {} for customer {}", appointmentId, customerId);
-        
+
         Appointment appointment = appointmentRepository.findByIdAndCustomerId(appointmentId, customerId)
-            .orElseThrow(() -> new AppointmentNotFoundException(
-                "Appointment not found with id: " + appointmentId + " for customer: " + customerId));
+                .orElseThrow(() -> new AppointmentNotFoundException(
+                        "Appointment not found with id: " + appointmentId + " for customer: " + customerId));
 
         appointment.setTitle(request.getTitle());
         appointment.setNotes(request.getNotes());
@@ -93,7 +94,7 @@ public class AppointmentService {
 
         Appointment updated = appointmentRepository.save(appointment);
         log.info("Updated appointment {} for customer {}", updated.getId(), customerId);
-        
+
         return AppointmentResponse.fromEntity(updated);
     }
 
@@ -108,21 +109,21 @@ public class AppointmentService {
     }
 
     @Transactional
-    public void deleteAppointmentsByCustomerId(Long customerId) {
+    public void deleteAppointmentsByCustomerId(String customerId) {
         log.info("Deleting all appointments for customer {}", customerId);
         appointmentRepository.deleteByCustomerId(customerId);
         log.info("Deleted all appointments for customer {}", customerId);
     }
 
     @Transactional
-    public void deleteAppointmentByCustomer(Long customerId, Long appointmentId) {
+    public void deleteAppointmentByCustomer(String customerId, Long appointmentId) {
         log.info("Deleting appointment {} for customer {}", appointmentId, customerId);
-        
+
         if (!appointmentRepository.findByIdAndCustomerId(appointmentId, customerId).isPresent()) {
             throw new AppointmentNotFoundException(
-                "Appointment not found with id: " + appointmentId + " for customer: " + customerId);
+                    "Appointment not found with id: " + appointmentId + " for customer: " + customerId);
         }
-        
+
         appointmentRepository.deleteByIdAndCustomerId(appointmentId, customerId);
         log.info("Deleted appointment {} for customer {}", appointmentId, customerId);
     }

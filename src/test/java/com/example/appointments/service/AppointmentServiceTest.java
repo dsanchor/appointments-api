@@ -98,13 +98,13 @@ class AppointmentServiceTest {
 
     @Test
     void testGetAppointmentsByCustomerId() {
-        when(appointmentRepository.findByCustomerId(100L)).thenReturn(Arrays.asList(appointment));
+        when(appointmentRepository.findByCustomerId("123456789A")).thenReturn(Arrays.asList(appointment));
 
-        List<AppointmentResponse> responses = appointmentService.getAppointmentsByCustomerId(100L);
+        List<AppointmentResponse> responses = appointmentService.getAppointmentsByCustomerId("123456789A");
 
         assertNotNull(responses);
         assertEquals(1, responses.size());
-        verify(appointmentRepository, times(1)).findByCustomerId(100L);
+        verify(appointmentRepository, times(1)).findByCustomerId("123456789A");
     }
 
     @Test
@@ -142,10 +142,10 @@ class AppointmentServiceTest {
 
     @Test
     void testDeleteAppointmentsByCustomerId() {
-        doNothing().when(appointmentRepository).deleteByCustomerId(100L);
+        doNothing().when(appointmentRepository).deleteByCustomerId("123456789A");
 
-        appointmentService.deleteAppointmentsByCustomerId(100L);
+        appointmentService.deleteAppointmentsByCustomerId("123456789A");
 
-        verify(appointmentRepository, times(1)).deleteByCustomerId(100L);
+        verify(appointmentRepository, times(1)).deleteByCustomerId("123456789A");
     }
 }
