@@ -40,14 +40,14 @@ class AppointmentControllerTest {
     @BeforeEach
     void setUp() {
         LocalDateTime startDate = LocalDateTime.of(2025, 11, 15, 10, 0);
-        
+
         appointmentRequest = new AppointmentRequest();
         appointmentRequest.setTitle("Test Appointment");
         appointmentRequest.setNotes("Test Notes");
         appointmentRequest.setCategory("Medical");
         appointmentRequest.setStartDate(startDate);
         appointmentRequest.setDone(false);
-        appointmentRequest.setCustomerId(100L);
+        appointmentRequest.setCustomerId("123456789A");
 
         appointmentResponse = new AppointmentResponse();
         appointmentResponse.setId(1L);
@@ -56,21 +56,21 @@ class AppointmentControllerTest {
         appointmentResponse.setCategory("Medical");
         appointmentResponse.setStartDate(startDate);
         appointmentResponse.setDone(false);
-        appointmentResponse.setCustomerId(100L);
+        appointmentResponse.setCustomerId("123456789A");
     }
 
     @Test
     void testCreateAppointment() throws Exception {
         when(appointmentService.createAppointment(any(AppointmentRequest.class)))
-            .thenReturn(appointmentResponse);
+                .thenReturn(appointmentResponse);
 
         mockMvc.perform(post("/api/appointments")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(appointmentRequest)))
-            .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.id").value(1L))
-            .andExpect(jsonPath("$.title").value("Test Appointment"))
-            .andExpect(jsonPath("$.customerId").value(100L));
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.title").value("Test Appointment"))
+                .andExpect(jsonPath("$.customerId").value("123456789A"));
     }
 
     @Test
@@ -79,9 +79,9 @@ class AppointmentControllerTest {
         when(appointmentService.getAllAppointments()).thenReturn(responses);
 
         mockMvc.perform(get("/api/appointments"))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].id").value(1L))
-            .andExpect(jsonPath("$[0].title").value("Test Appointment"));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].title").value("Test Appointment"));
     }
 
     @Test
@@ -89,9 +89,9 @@ class AppointmentControllerTest {
         when(appointmentService.getAppointmentById(1L)).thenReturn(appointmentResponse);
 
         mockMvc.perform(get("/api/appointments/1"))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.id").value(1L))
-            .andExpect(jsonPath("$.title").value("Test Appointment"));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.title").value("Test Appointment"));
     }
 
     @Test
@@ -100,45 +100,45 @@ class AppointmentControllerTest {
         when(appointmentService.getAppointmentsByCustomerId(100L)).thenReturn(responses);
 
         mockMvc.perform(get("/api/appointments/customer/100"))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].id").value(1L))
-            .andExpect(jsonPath("$[0].customerId").value(100L));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].customerId").value(100L));
     }
 
     @Test
     void testUpdateAppointment() throws Exception {
         when(appointmentService.updateAppointment(eq(1L), any(AppointmentRequest.class)))
-            .thenReturn(appointmentResponse);
+                .thenReturn(appointmentResponse);
 
         mockMvc.perform(put("/api/appointments/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(appointmentRequest)))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.id").value(1L))
-            .andExpect(jsonPath("$.title").value("Test Appointment"));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.title").value("Test Appointment"));
     }
 
     @Test
     void testDeleteAppointment() throws Exception {
         mockMvc.perform(delete("/api/appointments/1"))
-            .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent());
     }
 
     @Test
     void testDeleteAppointmentsByCustomerId() throws Exception {
-        mockMvc.perform(delete("/api/appointments/customer/100"))
-            .andExpect(status().isNoContent());
+        mockMvc.perform(delete("/api/appointments/customer/123456789A"))
+                .andExpect(status().isNoContent());
     }
 
     @Test
     void testCreateAppointmentWithValidationError() throws Exception {
         AppointmentRequest invalidRequest = new AppointmentRequest();
-        invalidRequest.setTitle("");  // Invalid - blank title
-        invalidRequest.setCustomerId(100L);
+        invalidRequest.setTitle(""); // Invalid - blank title
+        invalidRequest.setCustomerId("123456789A");
 
         mockMvc.perform(post("/api/appointments")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(invalidRequest)))
-            .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest());
     }
 }

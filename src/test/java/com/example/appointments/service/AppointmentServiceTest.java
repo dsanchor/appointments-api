@@ -42,7 +42,7 @@ class AppointmentServiceTest {
         appointment.setCategory("Medical");
         appointment.setStartDate(LocalDateTime.now());
         appointment.setDone(false);
-        appointment.setCustomerId(100L);
+        appointment.setCustomerId("123456789A");
 
         appointmentRequest = new AppointmentRequest();
         appointmentRequest.setTitle("Test Appointment");
@@ -50,7 +50,7 @@ class AppointmentServiceTest {
         appointmentRequest.setCategory("Medical");
         appointmentRequest.setStartDate(LocalDateTime.now());
         appointmentRequest.setDone(false);
-        appointmentRequest.setCustomerId(100L);
+        appointmentRequest.setCustomerId("123456789A");
     }
 
     @Test
